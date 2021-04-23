@@ -14,5 +14,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome2');
+});
+
+Route::get('/handstands', function () {
+	return view('handstands');
+});
+
+Route::get('handstands/{handstand}', function ($slug) {
+	$path = __DIR__ . "/../resources/handstands/{$slug}.html";
+
+	if (! file_exists($path)) {
+		return redirect('/handstands');
+	}
+	$handstand = file_get_contents($path);
+	return view('handstand', [
+		'handstand' => $handstand,
+	]);
 });
