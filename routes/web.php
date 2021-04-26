@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\Handstand;
+use Illuminate\Support\Facades\File;
+use Spatie\YamlFrontMatter\YamlFrontMatter;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,21 +17,28 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+     return view('welcome');
 });
 
 Route::get('/handstands', function () {
-	return view('handstands');
-});
+	$files = File::files(resource_path("handstands"));
+	$handstands = [];
 
-Route::get('handstands/{handstand}', function ($slug) {
-	$path = __DIR__ . "/../resources/handstands/{$slug}.html";
-
-	if (! file_exists($path)) {
-		return redirect('/handstands');
+	foreach ($files as $file) {
+		$document = YamlFrontMatter::parseFile($file);
+		$handstands = new Handstand(
+			$document->title,
+			$document->date,
+			$document->body(),
+		);
 	}
-	$handstand = file_get_contents($path);
-	return view('handstand', [
-		'handstand' => $handstand,
+	return view('handstands', [
+		'handstands' => Handstand::all(),
 	]);
 });
+
+Route::get('handstands/{handstand}', function ($slug) {	
+	return view('handstand', [
+		'handstand' => Handstand::find($slug),
+	]);
+})->where('handstand', '[A-z_\-]+');
