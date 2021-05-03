@@ -22,17 +22,18 @@ Route::get('/', function () {
 
 Route::get('/handstands', function () {
 	$files = File::files(resource_path("handstands"));
-	$handstands = [];
 
-	foreach ($files as $file) {
+	$handstands = array_map(function ($file) {
 		$document = YamlFrontMatter::parseFile($file);
-		$handstands[] = new Handstand(
+
+		return new Handstand(
 			$document->title,
 			$document->date,
 			$document->body(),
 			$document->slug,
 		);
-	}
+	}, $files);
+
 	return view('handstands', [
 		'handstands' => $handstands,
 	]);
