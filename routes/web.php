@@ -26,14 +26,14 @@ Route::get('/handstands', function () {
 
 	foreach ($files as $file) {
 		$document = YamlFrontMatter::parseFile($file);
-		$handstands = new Handstand(
+		$handstands[] = new Handstand(
 			$document->title,
 			$document->date,
 			$document->body(),
 		);
 	}
 	return view('handstands', [
-		'handstands' => Handstand::all(),
+		'handstands' => $handstands,
 	]);
 });
 
