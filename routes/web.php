@@ -21,18 +21,18 @@ Route::get('/', function () {
 });
 
 Route::get('/handstands', function () {
-	$files = File::files(resource_path("handstands"));
 
-	$handstands = array_map(function ($file) {
-		$document = YamlFrontMatter::parseFile($file);
+	$handstands = collect(File::files(resource_path("handstands")))
+		->map(function ($file) {
+			$document = YamlFrontMatter::parseFile($file);
 
-		return new Handstand(
-			$document->title,
-			$document->date,
-			$document->body(),
-			$document->slug,
-		);
-	}, $files);
+			return new Handstand(
+				$document->title,
+				$document->date,
+				$document->body(),
+				$document->slug,
+			);
+		});
 
 	return view('handstands', [
 		'handstands' => $handstands,
