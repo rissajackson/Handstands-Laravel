@@ -6,7 +6,11 @@
 
 <body>
 	<article>
-        <?= $handstand; ?>
+        <h1><?= $handstand->title; ?></h1>
+
+        <div>
+            <?= $handstand->body; ?>
+        </div>
     </article>
 
 	<a href="/handstands">Go Back</a>

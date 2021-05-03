@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\File;
+use Spatie\YamlFrontMatter\YamlFrontMatter;
 
 class Handstand
 {
@@ -25,17 +26,19 @@ class Handstand
     
     public static function find($slug)
     {
-        if (! file_exists($path = resource_path("handstands/{$slug}.html"))) {
-            throw new ModelNotFoundException();
-        }
-
-        return cache()->remember("handstands.{$slug}", now()->addMinute(), fn() => file_get_contents($path));
-   }
+        return static::all()->firstWhere('slug', $slug);
+    }
    
    public static function all()
    {
-        $files = File::files(resource_path("handstands/"));
-        
-        return array_map(fn($file) => $file->getContents(), $files);
+    return collect(File::files(resource_path("handstands")))
+        ->map(fn($file) => YamlFrontMatter::parseFile($file))
+        ->map(fn($document) => new Handstand(
+            $document->title,
+            $document->date,
+            $document->body(),
+            $document->slug,
+        ));
+
    }
 }

@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Models\Handstand;
 use Illuminate\Support\Facades\File;
-use Spatie\YamlFrontMatter\YamlFrontMatter;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,21 +20,8 @@ Route::get('/', function () {
 });
 
 Route::get('/handstands', function () {
-
-	$handstands = collect(File::files(resource_path("handstands")))
-		->map(function ($file) {
-			$document = YamlFrontMatter::parseFile($file);
-
-			return new Handstand(
-				$document->title,
-				$document->date,
-				$document->body(),
-				$document->slug,
-			);
-		});
-
 	return view('handstands', [
-		'handstands' => $handstands,
+		'handstands' => Handstand::all(),
 	]);
 });
 
