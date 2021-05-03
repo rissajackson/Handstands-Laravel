@@ -7,7 +7,15 @@
 <body>
     <?php foreach ($handstands as $handstand) : ?>
         <article>
-            <h1><?= $handstand->title; ?></h1>
+            <h1>
+                <a href="/handstands/<?= $handstand->slug; ?>">
+                    <?= $handstand->title; ?>
+                </a>
+            </h1>
+
+            <div>
+                <?= $handstand->body; ?>
+            </div>
         </article>
     <?php endforeach; ?>
 

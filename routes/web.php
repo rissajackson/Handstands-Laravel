@@ -30,6 +30,7 @@ Route::get('/handstands', function () {
 			$document->title,
 			$document->date,
 			$document->body(),
+			$document->slug,
 		);
 	}
 	return view('handstands', [

@@ -13,11 +13,14 @@ class Handstand
 
     public $body;
 
-    public function __construct($title, $date, $body)
+    public $slug;
+
+    public function __construct($title, $date, $body, $slug)
     {
         $this->title = $title;
         $this->date = $date;
         $this->body = $body;
+        $this->slug = $slug;
     }
     
     public static function find($slug)
@@ -26,7 +29,7 @@ class Handstand
             throw new ModelNotFoundException();
         }
 
-        return cache()->remember("posts.{$slug}" . now()->addMinute(), fn() => file_get_contents($path));
+        return cache()->remember("handstands.{$slug}", now()->addMinute(), fn() => file_get_contents($path));
    }
    
    public static function all()
