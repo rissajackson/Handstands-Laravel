@@ -31,14 +31,16 @@ class Handstand
    
    public static function all()
    {
-    return collect(File::files(resource_path("handstands")))
-        ->map(fn($file) => YamlFrontMatter::parseFile($file))
-        ->map(fn($document) => new Handstand(
-            $document->title,
-            $document->date,
-            $document->body(),
-            $document->slug,
-        ));
-
-   }
+        return cache()->rememberForever('handstands.all', function (){
+            return collect(File::files(resource_path("handstands")))
+                ->map(fn($file) => YamlFrontMatter::parseFile($file))
+                ->map(fn($document) => new Handstand(
+                    $document->title,
+                    $document->date,
+                    $document->body(),
+                    $document->slug,
+                ))
+                ->sortByDesc('date');
+        });
+    }
 }

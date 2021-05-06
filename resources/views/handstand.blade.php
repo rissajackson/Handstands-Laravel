@@ -6,10 +6,10 @@
 
 <body>
 	<article>
-        <h1><?= $handstand->title; ?></h1>
+        <h1>{{ $handstand->title }}</h1>
 
         <div>
-            <?= $handstand->body; ?>
+            {!! $handstand->body !!}
         </div>
     </article>
 
