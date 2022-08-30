@@ -2,45 +2,49 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\File;
+use Illuminate\Database\Eloquent\Model;
 use Spatie\YamlFrontMatter\YamlFrontMatter;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class Handstand
+class Handstand extends Model
 {
-    public $title;
+    use HasFactory;
 
-    public $date;
+    // public $title;
 
-    public $body;
+    // public $date;
 
-    public $slug;
+    // public $body;
 
-    public function __construct($title, $date, $body, $slug)
-    {
-        $this->title = $title;
-        $this->date = $date;
-        $this->body = $body;
-        $this->slug = $slug;
-    }
-    
-    public static function find($slug)
-    {
-        return static::all()->firstWhere('slug', $slug);
-    }
-   
-   public static function all()
-   {
-        return cache()->rememberForever('handstands.all', function (){
-            return collect(File::files(resource_path("handstands")))
-                ->map(fn($file) => YamlFrontMatter::parseFile($file))
-                ->map(fn($document) => new Handstand(
-                    $document->title,
-                    $document->date,
-                    $document->body(),
-                    $document->slug,
-                ))
-                ->sortByDesc('date');
-        });
-    }
+    // public $slug;
+
+    // public function __construct($title, $date, $body, $slug)
+    // {
+    //     $this->title = $title;
+    //     $this->date = $date;
+    //     $this->body = $body;
+    //     $this->slug = $slug;
+    // }
+
+    // public static function find($slug)
+    // {
+    //     return static::all()->firstWhere('slug', $slug);
+    // }
+
+//    public static function all()
+//    {
+//         return cache()->rememberForever('handstands.all', function (){
+//             return collect(File::files(resource_path("handstands")))
+//                 ->map(fn($file) => YamlFrontMatter::parseFile($file))
+//                 ->map(fn($document) => new Handstand(
+//                     $document->title,
+//                     $document->date,
+//                     $document->body(),
+//                     $document->slug,
+//                 ))
+//                 ->sortByDesc('date');
+//         });
+//     }
 }
