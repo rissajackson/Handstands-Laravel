@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<title>Types Of Handstands</title>
+<title>Different Types Of Handstands</title>
 <link rel="stylesheet" href="/css/app.css">
 <script src="/js/app.js"></script>
 
